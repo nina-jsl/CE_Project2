@@ -1,19 +1,27 @@
-'use client'
+"use client";
 import { useState, useRef } from "react";
+import { FaArrowLeft } from "react-icons/fa";
+import Link from "next/link"
 
 const SoundtrackSelector = () => {
-  type TrackKey = "river-flows-in-you" | "summer" | "merry-christmas-mr-lawrence";
+  type TrackKey =
+    | "river-flows-in-you"
+    | "summer"
+    | "merry-christmas-mr-lawrence";
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [selectedTrack, setSelectedTrack] = useState<TrackKey | null>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
 
   const tracks: Record<TrackKey, { name: string; src: string }> = {
-    "river-flows-in-you": { name: "River Flows in You", src: "/sounds/river-flows-in-you.mp3" },
+    "river-flows-in-you": {
+      name: "River Flows in You",
+      src: "/sounds/river-flows-in-you.mp3",
+    },
     summer: { name: "Summer", src: "/sounds/summer.mp3" },
     "merry-christmas-mr-lawrence": {
       name: "Merry Christmas, Mr. Lawrence",
-      src: "@/sounds/merry-christmas-mr-lawrence.mp3",
+      src: "/sounds/merry-christmas-mr-lawrence.mp3",
     },
   };
 
@@ -57,45 +65,50 @@ const SoundtrackSelector = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-blue-100 relative">
-      {!hasInteracted ? (
-        <button
-          onClick={startAudio}
-          className="px-6 py-3 rounded bg-blue-500 text-white hover:bg-blue-600 transition"
-        >
-          Start Audio & Breathing Exercise
-        </button>
-      ) : (
-        <>
-          <h1 className="text-xl font-bold mb-4">Calm Breather</h1>
-          <div className="w-32 h-32 bg-blue-500 rounded-full animate-breath"></div>
-          <p className="mt-4 text-gray-700">
-            Breathe in as the circle expands. Breathe out as it contracts.
-          </p>
-        </>
-      )}
+    <div className = " bg-blue-100 overflow-y-hidden h-screen">
+      {/* back icon */}
+      <Link href = "/"><FaArrowLeft className="text-gray-700 mt-4 ml-4"/></Link>
+      
+      <div className="flex flex-col items-center justify-center h-[90%] relative">
+        {!hasInteracted ? (
+          <button
+            onClick={startAudio}
+            className="px-6 py-3 rounded bg-blue-500 text-white hover:bg-blue-600 transition"
+          >
+            Start Audio & Breathing Exercise
+          </button>
+        ) : (
+          <>
+            <div></div>
+            <div className="w-32 h-32 bg-blue-500 rounded-full animate-breath"></div>
+            <p className="mt-20 text-gray-700">
+              Breathe in as the circle expands. Breathe out as it contracts.
+            </p>
+          </>
+        )}
 
-      {/* Hidden Audio Element */}
-      <audio ref={audioRef} loop hidden>
-        Your browser does not support the audio element.
-      </audio>
+        {/* Hidden Audio Element */}
+        <audio ref={audioRef} loop hidden>
+          Your browser does not support the audio element.
+        </audio>
 
-      <style jsx>{`
-        @keyframes breath {
-          0%, 100% {
-            transform: scale(1);
+        <style jsx>{`
+          @keyframes breath {
+            0%,
+            100% {
+              transform: scale(1);
+            }
+            50% {
+              transform: scale(1.5);
+            }
           }
-          50% {
-            transform: scale(1.5);
+          .animate-breath {
+            animation: breath 4s infinite;
           }
-        }
-        .animate-breath {
-          animation: breath 4s infinite;
-        }
-      `}</style>
+        `}</style>
+      </div>
     </div>
   );
 };
 
 export default SoundtrackSelector;
-
