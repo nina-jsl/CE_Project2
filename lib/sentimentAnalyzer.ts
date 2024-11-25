@@ -1,5 +1,4 @@
-// lib/sentimentAnalyzer.ts
-import * as vader from "vader-sentiment";
+import * as vader from 'vader-sentiment';
 
 type SentimentScores = {
   neg: number;
@@ -9,13 +8,14 @@ type SentimentScores = {
 };
 
 export const analyzeSentiment = (text: string): { sentiment: string; scores: SentimentScores } => {
-  const scores = vader.SentimentIntensityAnalyzer.polarity_scores(text);
+  // Assert the type of the returned object
+  const scores = vader.SentimentIntensityAnalyzer.polarity_scores(text) as SentimentScores;
 
-  let sentiment = "Neutral";
+  let sentiment = 'Neutral';
   if (scores.compound >= 0.05) {
-    sentiment = "Positive";
+    sentiment = 'Positive';
   } else if (scores.compound <= -0.05) {
-    sentiment = "Negative";
+    sentiment = 'Negative';
   }
 
   return { sentiment, scores };
