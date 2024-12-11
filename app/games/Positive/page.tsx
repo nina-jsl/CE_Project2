@@ -1,156 +1,137 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
+import { AiOutlineClose, AiOutlineHome } from "react-icons/ai";
 import Link from "next/link";
 
 const GratitudeGarden = () => {
-  const [gratitudeList, setGratitudeList] = useState<
-    { image: string; left: string; bottom: string }[]
+  const [bulbs, setBulbs] = useState<
+    { id: number; left: string; bottom: string; color: string; text: string }[]
   >([]);
-  const [gratitudeTexts, setGratitudeTexts] = useState<string[]>([]);
-  const [milestoneReached, setMilestoneReached] = useState(false); // For controlling the milestone pop-up
+  const [inputText, setInputText] = useState<string>("");
+  const [selectedText, setSelectedText] = useState<string | null>(null); // For pop-up content
+  const [showInfoPopup, setShowInfoPopup] = useState(true); // Initial pop-up
 
-  const gratitudeSuggestions = [
-    "I’m grateful for today’s sunshine",
-    "I appreciate my family and friends",
-    "I’m thankful for my health",
-    "I’m grateful for this moment of peace",
-    "I had a delicious meal today",
-    "I'm had a good song rec"
+  const colors = [
+    "bg-turqoise",
+    "bg-light-blue",
+    "bg-light-yellow",
+    "bg-white",
   ];
 
-  const flowerImages = [
-    "/flowers/cherry-blossom.png",
-    "/flowers/daisy.png",
-    "/flowers/daisy2.png",
-    "/flowers/morning-glory.png",
-  ];
-
-  const addGratitude = (thought: string) => {
-    if (!gratitudeTexts.includes(thought)) {
-      const randomImage =
-        flowerImages[Math.floor(Math.random() * flowerImages.length)];
-      const randomLeft = `${Math.random() * 90}%`;
-      const randomBottom = `${Math.random() * 50 + 10}%`;
-
-      setGratitudeList([
-        ...gratitudeList,
-        { image: randomImage, left: randomLeft, bottom: randomBottom },
-      ]);
-      setGratitudeTexts([...gratitudeTexts, thought]);
-
-      // Trigger milestone pop-up when 5 or more gratitudes are added
-      if (gratitudeTexts.length + 1 >= 5) {
-        setMilestoneReached(true);
-      }
+  // Adds a new bulb to the garden
+  const addBulb = () => {
+    if (inputText.trim() !== "") {
+      const newBulb = {
+        id: bulbs.length,
+        left: `${Math.random() * 90}%`,
+        bottom: `${Math.random() * 90}%`, // Adjusted to cover the full height
+        color: colors[Math.floor(Math.random() * colors.length)],
+        text: inputText,
+      };
+      setBulbs([...bulbs, newBulb]);
+      setInputText("");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-resolution-blue via-marian-blue to-green-900 ">
-      <p className="mb-4 text-white">
-        Add positive thoughts to grow your garden!
-      </p>
-
-      {/* Garden */}
-      <div className="relative w-full max-w-6xl h-96 bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 rounded-xl mb-6">
-        {gratitudeList.map((item, index) => (
-          <div
-            key={index}
-            className="absolute"
-            style={{
-              left: item.left,
-              bottom: item.bottom,
-            }}
-          >
-            <Image
-              src={item.image}
-              alt="Flower"
-              className="w-12 h-12"
-              width={250}
-              height={250}
-            />
-          </div>
-        ))}
-      </div>
-
-      {/* Gratitude Input */}
-      <div className="flex items-center gap-2">
-        <input
-          type="text"
-          placeholder="What are you grateful for?"
-          className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20  text-white rounded p-2 w-80"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && e.currentTarget.value) {
-              addGratitude(e.currentTarget.value);
-              e.currentTarget.value = "";
-            }
-          }}
+    <div className="relative min-h-screen bg-gradient-to-b from-resolution-blue via-marian-blue to-green-900 overflow-hidden">
+      {/* Home Icon */}
+      <Link href="/">
+        <AiOutlineHome
+          className="absolute top-4 left-4 text-white text-2xl cursor-pointer"
+          aria-label="Return to homepage"
         />
-        <button
-          onClick={() => {
-            const input =
-              document.querySelector<HTMLInputElement>("input[type='text']");
-            if (input?.value) {
-              addGratitude(input.value);
-              input.value = "";
-            }
-          }}
-          className=" bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20  text-white px-4 py-2 rounded hover:bg-green-600 transition"
-        >
-          Add Gratitude
-        </button>
-      </div>
+      </Link>
 
-      {/* Gratitude Suggestions */}
-      <div className="mt-6 mx-12">
-        <h2 className="text-lg font-semibold mb-2 text-white">Suggestions:</h2>
-        <div className="flex flex-wrap justify-center gap-3">
-          {gratitudeSuggestions.map((suggestion) => (
-            <button
-              key={suggestion}
-              onClick={() => addGratitude(suggestion)}
-              className=" bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 text-white px-3 py-1 rounded hover:bg-opacity-55"
-            >
-              {suggestion}
-            </button>
+      <div className="flex flex-col items-center justify-center min-h-screen relative">
+        {/* Info Pop-Up */}
+        {showInfoPopup && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white bg-opacity-10 backdrop-blur-md py-6 px-4 rounded-lg shadow-lg max-w-md w-full relative">
+              <AiOutlineClose
+                className="text-white text-lg absolute top-4 right-4 cursor-pointer"
+                aria-label="Close introduction"
+                onClick={() => setShowInfoPopup(false)}
+              />
+              <h1 className="text-white text-xl font-bold text-center mb-4">
+                Welcome to Luminous Journal
+              </h1>
+              <p className="text-white text-center leading-relaxed">
+                I’m so glad you’re feeling positive today! Studies show that
+                positivity thrives when we reflect on the good in the past,
+                savor the present, and look forward to the future. Add a thought
+                that makes you smile to grow glowing bulbs. Click a bulb anytime
+                to revisit your positivity. Let’s cultivate joy together!
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Glowing Bulbs */}
+        <div className="absolute inset-0 overflow-hidden">
+          {bulbs.map((bulb) => (
+            <div
+              key={bulb.id}
+              className={`absolute w-12 h-12 rounded-full ${bulb.color} animate-float cursor-pointer shadow-[0_0_15px_rgba(255,255,255,0.6),0_0_30px_rgba(255,255,255,0.4)]`}
+              style={{
+                left: bulb.left,
+                bottom: bulb.bottom,
+              }}
+              onClick={() => setSelectedText(bulb.text)}
+              aria-label="Click to view positive thought"
+            ></div>
           ))}
         </div>
+
+        {/* Input Field and Add Button */}
+        <div className="flex items-center gap-2 z-10">
+          <input
+            type="text"
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            placeholder="Enter your positive thought"
+            className="bg-white bg-opacity-10 backdrop-blur-md text-white px-4 py-2 rounded w-80"
+          />
+          <button
+            onClick={addBulb}
+            className="bg-white bg-opacity-10 backdrop-blur-md text-white px-4 py-2 rounded hover:bg-green-600 transition"
+          >
+            Add Bulb
+          </button>
+        </div>
+
+        {/* Positive Thought Pop-Up */}
+        {selectedText && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white bg-opacity-10 backdrop-blur-md py-6 px-4 rounded-lg shadow-lg max-w-md w-full relative">
+              <AiOutlineClose
+                className="text-white text-lg absolute top-4 right-4 cursor-pointer"
+                aria-label="Close positive thought"
+                onClick={() => setSelectedText(null)}
+              />
+              <p className="text-white text-center mt-4 mb-6">{selectedText}</p>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Milestone Pop-Up */}
-      {milestoneReached && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h1 className="text-2xl font-bold text-center mb-4">
-              🎉 Milestone Reached! 🎉
-            </h1>
-            <p className="text-gray-700 text-center mb-4">
-              You’ve added 5 or more gratitudes! We hope this good mood
-              accompanies you today.
-            </p>
-            <ul className="list-disc list-inside text-gray-800">
-              {gratitudeTexts.map((text, index) => (
-                <li key={index}>{text}</li>
-              ))}
-            </ul>
-            <div className = "flex gap-2">
-            {/* <button
-              onClick={() => setMilestoneReached(false)}
-              className="mt-6 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-            >
-              Close
-            </button> */}
-            <Link href="/">
-              <button className="mt-6 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">
-                Home
-              </button>
-            </Link>
-            </div>
-            
-          </div>
-        </div>
-      )}
+      {/* Animation Styles */}
+      <style jsx>{`
+        @keyframes float {
+          0% {
+            transform: translate(0, 0);
+          }
+          50% {
+            transform: translate(10px, -20px);
+          }
+          100% {
+            transform: translate(0, 0);
+          }
+        }
+        .animate-float {
+          animation: float 5s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 };

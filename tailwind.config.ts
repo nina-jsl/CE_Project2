@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        glowing: '0 0 15px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4)',
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
@@ -25,6 +28,9 @@ export default {
         "harvest-gold": "#E8AF01ff",
         "hunter-green": "#4B6E50ff",
         "lapis-lazuli": "#01608Fff",
+        "turqoise":"#bee9e8",
+        "light-blue":"#cae9ff",
+        "light-yellow":"#ffe45e"
       },
     },
   },

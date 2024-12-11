@@ -9,7 +9,7 @@ const EmotionSelector = () => {
   const [loading, setLoading] = useState(false);
 
   const gameNames: { [key: string]: string } = {
-    Positive: "Golden Hours",
+    Positive: "Luminous Journal",
     Neutral: "Mood Bridge",
     Negative: "Inner Oasis",
   };
