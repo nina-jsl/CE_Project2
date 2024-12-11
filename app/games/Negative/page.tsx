@@ -73,14 +73,14 @@ const SoundtrackSelector = () => {
         </Link>
         {showInfoPopup && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="bg-white bg-opacity-10 backdrop-blur-md py-6 px-4 rounded-lg shadow-lg max-w-md w-full relative">
+            <div className="bg-harvest-gold bg-opacity-10 backdrop-blur-md py-6 px-4 rounded-lg shadow-lg max-w-md w-full relative">
               <AiOutlineClose
                 className="text-white text-lg absolute top-4 right-4 cursor-pointer"
                 aria-label="Close introduction"
                 onClick={() => setShowInfoPopup(false)}
               />
               <h1 className="text-white text-xl font-bold text-center mb-4">
-                Welcome to Luminous Journal
+                Welcome to Inner Oasis
               </h1>
               <p className="text-white text-center leading-relaxed">
                 I’m sorry you’re feeling this way. Taking a moment to breathe
