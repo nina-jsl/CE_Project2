@@ -50,13 +50,18 @@ const EmotionSelector = () => {
         </div>
 
         {emotion && (
-          <div className="mt-5 text-sm">
-            Your recommended elevation path:{" "}
-            <Link href={`/games/${emotion}`}>
-              <span className="font-bold hover:bg-blue-500 hover:text-white transition-colors duration-200 px-2 rounded py-1">
-                {gameNames[emotion]}
-              </span>
-            </Link>
+          <div className="mt-5">
+            <p className="text-sm text-center">
+              Your recommended elevation path:{" "}
+              <Link href={`/games/${emotion}`}>
+                <span className="font-bold hover:bg-blue-500 hover:text-white transition-colors duration-200 px-2 rounded py-1">
+                  {gameNames[emotion]}
+                </span>
+              </Link>
+            </p>
+            <p className="mt-2 text-xs text-blue-500">
+              (Please click on the name of the recommended path to continue)
+            </p>
           </div>
         )}
       </div>
