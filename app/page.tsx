@@ -59,8 +59,8 @@ const EmotionSelector = () => {
                 </span>
               </Link>
             </p>
-            <p className="mt-2 text-xs text-blue-500">
-              (Please click on the name of the recommended path to continue)
+            <p className="mt-2 text-xs text-blue-500 text-center">
+              (Please click on {gameNames[emotion]} to continue)
             </p>
           </div>
         )}

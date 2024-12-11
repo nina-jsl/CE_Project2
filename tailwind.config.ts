@@ -1,4 +1,6 @@
 import type { Config } from "tailwindcss";
+// const plugin = require('@tailwindcss/scrollbar');
+
 
 export default {
   content: [
@@ -30,7 +32,9 @@ export default {
         "lapis-lazuli": "#01608Fff",
         "turqoise":"#bee9e8",
         "light-blue":"#cae9ff",
-        "light-yellow":"#ffe45e"
+        "light-yellow":"#ffe45e",
+        scrollbarTrack: 'rgba(255, 255, 255, 0.1)', // Track color
+        scrollbarThumb: 'rgba(255, 204, 0, 0.6)', // Thumb color
       },
     },
   },

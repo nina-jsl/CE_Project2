@@ -1,18 +1,13 @@
 "use client";
 import { useState } from "react";
+import { AiOutlineClose, AiOutlineHome } from "react-icons/ai";
 import Link from "next/link";
 
 const GratitudeGlow = () => {
   const [gratitudeList, setGratitudeList] = useState<string[]>([]);
   const [orbSize, setOrbSize] = useState(100); // Initial size of the orb
-
-  const gratitudeSuggestions = [
-    "I’m thankful for sunshine",
-    "I had a nice meal",
-    "I’m grateful for my health",
-    "I appreciate my family and friends",
-    "I’m thankful for learning opportunities",
-  ];
+  const [showInfoPopup, setShowInfoPopup] = useState(true); // Initial pop-up
+  const [endPopup, setEndPopup] = useState(false);
 
   const addGratitude = (thought: string) => {
     if (!gratitudeList.includes(thought)) {
@@ -22,12 +17,34 @@ const GratitudeGlow = () => {
   };
 
   return (
-    <div
-      className="flex flex-col items-center justify-center h-screen text-center transition-all duration-500 bg-smoky-black"
-    >
-      <p className="mb-4 text-white">
-        Add positive or grateful thoughts to make the orb glow brighter!
-      </p>
+    <div className="relative h-screen bg-gradient-to-b from-carrot-orange via-gamboge to-rose-pompadour overflow-hidden text-center">
+      {/* Home Icon */}
+      <Link href="/">
+        <AiOutlineHome className="absolute top-4 left-4 text-white text-2xl cursor-pointer z-30" />
+      </Link>
+
+      {/* Info Pop-Up */}
+      {showInfoPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white bg-opacity-10 backdrop-blur-md py-6 px-4 rounded-lg shadow-lg max-w-md w-full relative">
+            <AiOutlineClose
+              className="text-white text-lg absolute top-4 right-4 cursor-pointer"
+              aria-label="Close introduction"
+              onClick={() => setShowInfoPopup(false)}
+            />
+            <h1 className="text-white text-xl font-bold text-center mb-4">
+              Welcome to Mood
+            </h1>
+            <p className="text-white text-center leading-relaxed">
+              Feeling neutral is a great place to start! Let’s take a moment to
+              appreciate what’s good around us and nurture positivity. Gratitude
+              can transform even the smallest moments into something meaningful.
+              Add your thoughts to grow the orb! Together, we’ll make this time
+              uplifting and energizing 🌟
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Glowing Orb */}
       <div
@@ -36,82 +53,69 @@ const GratitudeGlow = () => {
           height: `${orbSize}px`,
           background: `radial-gradient(circle, #ffcc00, #ffa500, #ff8800)`,
           borderRadius: "50%",
-          boxShadow: `0 0 ${orbSize / 2}px ${orbSize / 10}px rgba(255, 204, 0, 0.6)`,
+          boxShadow: `0 0 ${orbSize / 2}px ${
+            orbSize / 10
+          }px rgba(255, 204, 0, 0.6)`,
           transition: "all 0.5s ease",
         }}
-        className={orbSize >= 200 ? "transform rotate-180 transition" : ""}
+        className="absolute inset-0 m-auto transform z-10"
       ></div>
 
-      {/* Gratitude Input */}
-      <div className="mt-6 flex gap-2">
-        <input
-          type="text"
-          placeholder="What are you grateful for?"
-          className="bg-white bg-opacity-10 placeholder-white backdrop-blur-md border border-white border-opacity-20 text-white rounded p-2 w-80"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && e.currentTarget.value) {
-              addGratitude(e.currentTarget.value);
-              e.currentTarget.value = "";
-            }
-          }}
-        />
-        <button
-          onClick={() => {
-            const input = document.querySelector<HTMLInputElement>(
-              "input[type='text']"
-            );
-            if (input?.value) {
-              addGratitude(input.value);
-              input.value = "";
-            }
-          }}
-          className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 text-white px-4 py-2 rounded hover:bg-green-600 transition"
-        >
-          Add
-        </button>
-      </div>
-
-      {/* Gratitude Suggestions */}
-      <div className="mt-12 mx-12">
-        <h2 className="text-lg font-semibold mb-2 text-white text-left">
-          Suggestions:
-        </h2>
-        <div className="flex flex-wrap justify-center gap-2">
-          {gratitudeSuggestions.map((suggestion) => (
-            <button
-              key={suggestion}
-              onClick={() => addGratitude(suggestion)}
-              className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 text-white px-3 py-1 rounded hover:bg-opacity-55"
-            >
-              {suggestion}
-            </button>
-          ))}
+      {/* Input and Buttons */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
+        <div className="flex gap-2">
+          <input
+            type="text"
+            placeholder="What are you grateful for?"
+            className="bg-white bg-opacity-10 placeholder-white backdrop-blur-md border border-white border-opacity-20 text-white rounded p-2 w-80 font-bold"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && e.currentTarget.value) {
+                addGratitude(e.currentTarget.value);
+                e.currentTarget.value = "";
+              }
+            }}
+          />
+          <button
+            onClick={() => {
+              const input =
+                document.querySelector<HTMLInputElement>("input[type='text']");
+              if (input?.value) {
+                addGratitude(input.value);
+                input.value = "";
+              }
+            }}
+            className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 text-white px-4 py-2 rounded hover:bg-rose-pompadour transition font-bold"
+          >
+            Add
+          </button>
+          <button
+            onClick={() => setEndPopup(true)}
+            className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 text-white px-4 py-2 rounded hover:bg-rose-pompadour transition font-bold"
+          >
+            End
+          </button>
         </div>
       </div>
 
-      {/* Orb Transformation */}
-      {orbSize >= 200 && (
+      {/* End Pop-Up */}
+      {endPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h1 className="text-2xl font-bold text-center mb-4">
-              🎉 Milestone Reached! 🎉
-            </h1>
-            <p className="text-gray-700 text-center mb-4">
-              You’ve added 5 or more gratitudes! Your glowing thoughts have
-              illuminated the entire space. Thank you for sharing your light!
+          <div className="bg-white bg-opacity-10 backdrop-blur-md py-6 px-4 rounded-lg shadow-lg max-w-md w-full relative">
+            <AiOutlineClose
+              className="text-white text-lg absolute top-4 right-4 cursor-pointer"
+              aria-label="Close introduction"
+              onClick={() => setEndPopup(false)}
+            />
+            <p className="text-white text-center leading-relaxed mb-4 mt-4">
+              It’s wonderful that you’ve identified so much to be grateful for!
+              Here’s a list of your positive thoughts—may they energize and
+              uplift you throughout the day. Keep shining! 🌟
             </p>
-            <ul className="list-disc list-inside text-gray-800">
-              {gratitudeList.map((text, index) => (
-                <li key={index}>{text}</li>
+            <ul className="list-disc list-inside text-white text-left max-h-40 overflow-y-auto scrollbar scrollbar-thumb-scrollbarThumb scrollbar-track-scrollbarTrack scrollbar-thumb-rounded-full hover:scrollbar-thumb-scrollbarThumbHover">
+              {gratitudeList.map((thought, index) => (
+                <li key={index}>{thought}</li>
               ))}
             </ul>
-            <div className="flex gap-2">
-              <Link href="/">
-                <button className="mt-6 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-orange-600 transition">
-                  Home
-                </button>
-              </Link>
-            </div>
           </div>
         </div>
       )}
@@ -120,4 +124,3 @@ const GratitudeGlow = () => {
 };
 
 export default GratitudeGlow;
-
