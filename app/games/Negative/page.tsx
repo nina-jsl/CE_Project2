@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 import Link from "next/link";
+import { AiOutlineClose, AiOutlineHome } from "react-icons/ai";
 
 const SoundtrackSelector = () => {
   type TrackKey =
@@ -13,6 +14,7 @@ const SoundtrackSelector = () => {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [exerciseComplete, setExerciseComplete] = useState(false); // State for pop-up
   const [isPaused, setIsPaused] = useState(false); // State for pause/resume
+  const [showInfoPopup, setShowInfoPopup] = useState(true); // Initial pop-up
 
   const tracks: Record<TrackKey, { name: string; src: string }> = {
     "river-flows-in-you": {
@@ -63,6 +65,32 @@ const SoundtrackSelector = () => {
   if (!selectedTrack) {
     return (
       <div className="h-screen w-screen flex justify-center items-center">
+        <Link href="/">
+          <AiOutlineHome
+            className="absolute top-4 left-4 text-white text-2xl cursor-pointer z-50"
+            // aria-label="Return to homepage"
+          />
+        </Link>
+        {showInfoPopup && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="bg-harvest-gold/80 bg-opacity-10 backdrop-blur-md py-6 px-4 rounded-lg shadow-lg max-w-md w-full relative">
+              <AiOutlineClose
+                className="text-white text-lg absolute top-4 right-4 cursor-pointer"
+                aria-label="Close introduction"
+                onClick={() => setShowInfoPopup(false)}
+              />
+              <h1 className="text-white text-xl font-bold text-center mb-4">
+                Welcome to Inner Oasis
+              </h1>
+              <p className="text-white text-center leading-relaxed">
+                I’m sorry you’re feeling this way. Taking a moment to breathe
+                deeply and surround yourself with calming stimuli can make a
+                real difference. If you’re open to it, let’s take a few minutes
+                together to find some peace and balance. 🌱
+              </p>
+            </div>
+          </div>
+        )}
         <div className="p-6 max-w-lg mx-auto text-center">
           <h1 className="text-2xl font-bold mb-4 text-harvest-gold">
             Choose A Soundtrack To Continue

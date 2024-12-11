@@ -38,8 +38,8 @@ const GratitudeGarden = () => {
       {/* Home Icon */}
       <Link href="/">
         <AiOutlineHome
-          className="absolute top-4 left-4 text-white text-2xl cursor-pointer"
-          aria-label="Return to homepage"
+          className="absolute top-4 left-4 text-white text-2xl cursor-pointer z-50"
+          // aria-label="Return to homepage"
         />
       </Link>
 
