@@ -60,8 +60,17 @@ const EmotionSelector = () => {
               </Link>
             </p>
             <p className="mt-2 text-xs text-blue-500 text-center">
-              (Please click on {gameNames[emotion]} to continue)
+              (click on {gameNames[emotion]} to continue)
             </p>
+            {/* <div className = 'w-full flex justify-center'>
+              <Link href={`/games/${emotion}`}>
+                <button
+                  className="mt-3 text-sm cursor-pointer bg-white border border-blue-500 text-blue-500 hover:bg-blue-200rounded-md px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white"
+                >
+                  Start
+                </button>
+              </Link>
+            </div> */}
           </div>
         )}
       </div>

@@ -33,7 +33,7 @@ const GratitudeGlow = () => {
               onClick={() => setShowInfoPopup(false)}
             />
             <h1 className="text-white text-xl font-bold text-center mb-4">
-              Welcome to Mood
+              Welcome to Mood Bridge
             </h1>
             <p className="text-white text-center leading-relaxed">
               Feeling neutral is a great place to start! Let’s take a moment to
